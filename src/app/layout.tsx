@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/providers/theme-provider"
+import { ThemeProvider } from "@/providers/theme-provider";
 import Header from "@/components/Header";
-import { Toaster } from "@/components/ui/sonner"
-import { Sidebar } from "@/components/ui/sidebar";
-import AppSidebar  from "@/components/AppSidebar"
+import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar";
 
 export const metadata: Metadata = {
   title: "Goat Notes",
@@ -17,27 +17,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-      >
+      <body>
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <Sidebar>
-            <AppSidebar /> 
-            <div className="flex min-h-screen w-full flex-col">
+          <SidebarProvider>
+            <div className="flex min-h-screen w-full">
+              {/* Sidebar (left column) */}
+              <AppSidebar />
 
-            <Header />
-            <main className="flex flex-col flex-1 px-4 pt-10 xl:px-8">{children}</main>
+              {/* Main content area */}
+              <div className="flex flex-col flex-1">
+                <Header />
+                <main className="flex flex-col flex-1 px-4 pt-10 xl:px-8">
+                  {children}
+                </main>
               </div>
-              
-          </Sidebar>
-          
-          <Toaster/>
-          </ThemeProvider>
-    
+            </div>
+          </SidebarProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

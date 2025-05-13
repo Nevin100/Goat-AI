@@ -2,6 +2,8 @@ import shadow from "@/styles/utilis";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import DarkModeToggle from "./DarkModeToggle";
+import LogOutButton from "./LogOutButton";
 
 const Header = () => {
   const user = true;
@@ -17,9 +19,7 @@ const Header = () => {
       <div className="flex gap-4">
         {user ? (
           <>
-          <Button asChild className="hidden sm:block">
-              <Link href={"/logou"}>Logout</Link>
-            </Button>
+          <LogOutButton/>
           </>
         ) : (
           <>
@@ -30,7 +30,8 @@ const Header = () => {
               <Link href={"/login"}>Login</Link>
             </Button>
           </>
-        ) }
+        )}
+        <DarkModeToggle />
       </div>
 
     </header>

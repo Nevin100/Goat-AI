@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client"
 
 import React, { useTransition } from 'react'
@@ -10,6 +10,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { LoginAction,SignUpAction } from '@/Actions/users';
 
 type Props = {
   type: 'login' | 'signup'
@@ -19,9 +20,41 @@ const AuthForm = ({type} : Props) => {
   const isLoginForm = type === 'login'; 
   const router = useRouter();
 
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
+
   const handleSubmit = async (formData: FormData) => { 
-    console.log('formData', formData);
+    startTransition( async () => {
+      const email = formData.get('email') as string;
+      const password = formData.get('Password') as string;
+
+      let errorMessage;
+      let title;
+      let description;
+
+      if(isLoginForm) {
+        errorMessage = (await LoginAction(email, password)).errorMessage;
+        title = "Logged In";
+        description = "You have successfully logged in";
+      } else {
+        errorMessage = (await SignUpAction(email, password)).errorMessage;
+        title = "Signed Up";
+        description = "You have successfully signed up";            
+      }
+
+      if (errorMessage) {
+        toast.error(errorMessage, {
+          description: "Please try again",
+          duration: 5000,
+        });
+      } else {
+        toast.success(title, {
+          description: description,
+          duration: 5000,
+        });
+        router.replace('/');
+      }
+      
+    })
   }
   return (
     <div>
